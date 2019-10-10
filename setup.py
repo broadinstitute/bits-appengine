@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 setup(
     name='bits-appengine',
 
-    version='1.0.0',
+    version='1.0.1',
 
     description='BITS AppEngine',
     long_description='',
@@ -31,7 +31,7 @@ setup(
 
     packages=find_packages(),
     install_requires=[
-        'flask',
+        'flask==1.0.2',
     ],
 
     zip_safe=False,
