@@ -17,11 +17,11 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='bits-example',
+    name='bits-appengine',
 
     version='1.0.0',
 
-    description='BITS Example',
+    description='BITS AppEngine',
     long_description='',
 
     author='Lukas Karlsson',
@@ -31,6 +31,7 @@ setup(
 
     packages=find_packages(),
     install_requires=[
+        'flask',
     ],
 
     zip_safe=False,

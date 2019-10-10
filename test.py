@@ -9,12 +9,12 @@ import sys
 mypath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(mypath, "bits"))
 
-from bits.example import Example  # noqa
+from bits.appengine import AppEngine  # noqa
 
 
 def main():
     """Execute the main function."""
-    e = Example()
+    e = AppEngine()
     print(e)
 
 
