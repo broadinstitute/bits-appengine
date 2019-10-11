@@ -14,25 +14,38 @@ class AppEngine(object):
 
     def __init__(
         self,
-        database='firestore',
-        project=None,
+        config_collection='settings',
+        config_database='firestore',
+        config_project=None,
+        debug_user=None,
         user_collection='users',
-        debug_user=None
+        user_database='firestore',
+        user_project=None,
     ):
         """Initialize an Example class instance."""
-        self.database = database
+        self.config_collection = config_collection
+        self.config_database = config_database
+        self.config_project = config_project
         self.debug_user = debug_user
+        self.user_collection = user_collection
+        self.user_database = user_database
+        self.user_project = user_project
 
     def config(self):
         """Return a Config instance."""
         return Config(
             appengine=self,
-            database=self.database,
+            collection=self.config_collection,
+            database=self.config_database,
+            project=self.config_project,
         )
 
     def user(self):
         """Return a User instance."""
         return User(
             appengine=self,
-            database=self.database,
+            collection=self.user_collection,
+            database=self.user_database,
+            debug_user=self.debug_user,
+            project=self.user_project,
         )
