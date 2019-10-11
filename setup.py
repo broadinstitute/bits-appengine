@@ -21,7 +21,7 @@ setup(
 
     version='1.0.1',
 
-    description='BITS AppEngine',
+    description='BITS App Engine',
     long_description='',
 
     author='Lukas Karlsson',
@@ -32,6 +32,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         'flask==1.0.2',
+        'google-cloud-datastore',
+        'google-cloud-firestore',
     ],
 
     zip_safe=False,
