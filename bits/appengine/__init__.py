@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 """Example class file."""
 
-from flask import request
-from google.cloud import firestore
-
-
 from bits.appengine.config import Config
 from bits.appengine.user import User
 

@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 setup(
     name='bits-appengine',
 
-    version='1.0.2',
+    version='1.0.3',
 
     description='BITS App Engine',
     long_description='',
@@ -34,6 +34,9 @@ setup(
         'flask==1.0.2',
         'google-cloud-datastore',
         'google-cloud-firestore',
+        'google-api-python-client',
+        'httplib2',
+        'oauth2client',
     ],
 
     zip_safe=False,
