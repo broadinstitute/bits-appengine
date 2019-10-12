@@ -10,7 +10,7 @@ mypath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(mypath, "bits"))
 
 from bits.appengine import AppEngine  # noqa
-from bits.appengine.endpoints import Endpoints
+from bits.appengine.endpoints import Endpoints  # noqa
 
 # debug_user = {
 #     'email': 'karlsson@broadinstitue.org',
@@ -23,11 +23,12 @@ def main():
     # appengine = AppEngine()
     client = Endpoints.Client(
         api='bitsdb',
+        api_key='AIzaSyAOvXcdqHE3ebDRbsIkhbwvaW7N-GKMREA',
         base_url='https://broad-bitsdb-api.appspot.com',
         # debug=True
     )
     request = client.service.people().list()
-    people = request.execute()
+    people = request.execute().get('items', [])
     print('People: {}'.format(len(people)))
 
 

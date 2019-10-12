@@ -1,13 +1,12 @@
+# -*- coding: utf-8 -*-
 """Endpoints Class file."""
 
-import httplib2
 import requests
 import time
 
 from apiclient.discovery import build
-from google.auth import crypt, jwt
+from google.auth import default, jwt
 from oauth2client import client
-from google.oauth2 import service_account
 
 
 class Endpoints(object):
@@ -21,7 +20,6 @@ class Endpoints(object):
             api_key=None,
             base_url='http://localhost:8080',
             api='bitsdb',
-            service_account_file='etc/service_account.json',
             version='v1',
             verbose=False,
         ):
@@ -29,7 +27,6 @@ class Endpoints(object):
             self.api = api
             self.api_key = api_key
             self.base_url = base_url
-            self.service_account_json_file = service_account_file
             self.verbose = verbose
             self.version = version
 
@@ -42,17 +39,11 @@ class Endpoints(object):
                 self.version
             )
 
-            # get an id_token fro the service account
-            self.id_token = self.get_id_token()
-
             # create credentials from the id_token
             self.credentials = client.AccessTokenCredentials(
-                self.id_token,
+                self.get_id_token(),
                 'my-user-agent/1.0'
             )
-
-            # create an authorized httplib2 Http() object
-            self.http = self.credentials.authorize(httplib2.Http())
 
             # create a bitsdb service connection
             self.service = build(
@@ -60,18 +51,13 @@ class Endpoints(object):
                 self.version,
                 developerKey=self.api_key,
                 discoveryServiceUrl=self.discovery_url,
-                http=self.http,
+                credentials=self.credentials
             )
 
         def generate_signed_jwt(self):
             """Generate a signed java web token for service account."""
-            # get service account email address for token
-            email = service_account.Credentials.from_service_account_file(
-                self.service_account_json_file
-            ).service_account_email
-
-            # create a signer
-            signer = crypt.RSASigner.from_service_account_file(self.service_account_json_file)
+            # generate default credentials
+            credentials, _ = default()
 
             # get time now
             now = int(time.time())
@@ -83,15 +69,15 @@ class Endpoints(object):
                 # expires after one hour.
                 'exp': now + 3600,
                 # issuer - client email
-                'iss': email,
+                'iss': credentials.service_account_email,
                 # the URL of the target service.
-                'target_audience': 'https://broad-bitsdb-api.appspot.com/web-client-id',
+                'target_audience': '{}/web-client-id'.format(self.base_url),
                 # Google token endpoints URL
                 'aud': 'https://www.googleapis.com/oauth2/v4/token'
             }
 
             # sign the payload with the signer
-            return jwt.encode(signer, payload)
+            return jwt.encode(credentials.signer, payload)
 
         def get_id_token(self):
             """Return an access token for connecting to BITSdb."""
@@ -102,6 +88,4 @@ class Endpoints(object):
             }
             url = 'https://www.googleapis.com/oauth2/v4/token'
             # send the JWT to Google Token endpoints to request Google ID token
-            response = requests.post(url, data=params, headers=headers)
-            response.raise_for_status
-            return response.json().get('id_token')
+            return requests.post(url, data=params, headers=headers).json().get('id_token')

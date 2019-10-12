@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 setup(
     name='bits-appengine',
 
-    version='1.0.3',
+    version='1.0.4',
 
     description='BITS App Engine',
     long_description='',
