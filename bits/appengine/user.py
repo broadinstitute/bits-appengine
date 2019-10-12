@@ -79,7 +79,7 @@ class User(object):
         """Return the user info from firestore."""
         db = firestore.Client(project=self.project)
         user = db.collection(self.collection).document(self.id).get().to_dict()
-        if user.get('admin'):
+        if user and user.get('admin'):
             self.admin = True
 
     def get_stored_user(self):
