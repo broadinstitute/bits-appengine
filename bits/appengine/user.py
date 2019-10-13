@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """App Engine User class file."""
 
+import os
 import logging
 from flask import request
 from google.cloud import datastore
@@ -30,7 +31,7 @@ class User(object):
         self.id = None
 
         # get the logged-in user
-        if self.debug_user:
+        if self.is_dev:
             # get the debug user
             self.get_debug_user()
         else:
@@ -90,3 +91,20 @@ class User(object):
             return self.get_stored_datastore_user()
         else:
             logging.error('Unsupported database: {}'.format(self.database))
+
+    def is_admin(self):
+        """Return true if the user is an admin."""
+        if self.admin:
+            return True
+
+    def is_dev(self):
+        """Return true if we are in the dev environment."""
+        if not os.getenv('GAE_DEPLOYMENT_ID'):
+            return True
+
+    def role(self):
+        """Return the user's role."""
+        role = 'user'
+        if self.is_admin():
+            role = 'admin'
+        return role
