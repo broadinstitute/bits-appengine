@@ -2,6 +2,7 @@
 
 # import base64
 # import json
+import httplib2
 import requests
 # import time
 
@@ -42,7 +43,7 @@ class Endpoints(object):
             )
 
             # create credentials from the id_token
-            self.credentials = self.create_credentials()
+            self.http = self.create_http()
 
             # create a service connection
             self.service = build(
@@ -50,17 +51,21 @@ class Endpoints(object):
                 self.version,
                 developerKey=self.api_key,
                 discoveryServiceUrl=self.discovery_url,
-                credentials=self.credentials
+                http=self.http,
             )
 
         def create_credentials(self):
             """Create credentials for talking to an endpoints API."""
-            id_token = self.get_id_token_new()
-            credentials = creds.Credentials()
-            credentials.token = id_token
-            return credentials
+            id_token = self.generate_id_token()
+            return client.AccessTokenCredentials(id_token, 'my-user-agent/1.0')
 
-        def get_id_token_new(self):
+        def create_http(self):
+            """Create a httplib2.Http() instance signed witht he credentials."""
+            self.credentials = self.create_credentials()
+            http = httplib2.Http()
+            return self.credentials.authorize(http)
+
+        def generate_id_token(self):
             """Return an ID token that can be used to create credentials."""
             credentials, project = default()
             iam = build('iamcredentials', 'v1', credentials=credentials)
