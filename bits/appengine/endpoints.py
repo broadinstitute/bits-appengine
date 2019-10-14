@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Endpoints Class file."""
 
 import requests
@@ -58,6 +57,8 @@ class Endpoints(object):
             """Generate a signed java web token for service account."""
             # generate default credentials
             credentials, _ = default()
+            print('Credentials: {}'.format(credentials))
+            print(dir(credentials))
 
             # get time now
             now = int(time.time())
@@ -75,6 +76,7 @@ class Endpoints(object):
                 # Google token endpoints URL
                 'aud': 'https://www.googleapis.com/oauth2/v4/token'
             }
+            print('JWT Payload: {}'.format(payload))
 
             # sign the payload with the signer
             return jwt.encode(credentials.signer, payload)
