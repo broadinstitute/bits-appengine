@@ -1,10 +1,13 @@
 """Endpoints Class file."""
 
+# import base64
+# import json
 import requests
-import time
+# import time
 
 from apiclient.discovery import build
 from google.auth import default, jwt
+from google.auth import credentials as creds
 from oauth2client import client
 
 
@@ -39,10 +42,7 @@ class Endpoints(object):
             )
 
             # create credentials from the id_token
-            self.credentials = client.AccessTokenCredentials(
-                self.get_id_token(),
-                'my-user-agent/1.0'
-            )
+            self.credentials = self.create_credentials()
 
             # create a service connection
             self.service = build(
@@ -53,61 +53,37 @@ class Endpoints(object):
                 credentials=self.credentials
             )
 
-        def generate_signed_jwt(self):
-            """Generate a signed java web token for service account."""
-            # generate default credentials
-            credentials, project = default()
-            service_account_email = '{}@appspot.gserviceaccount.com'.format(project)
-
-            # get time now
-            now = int(time.time())
-
-            # create jwt payload
-            payload = {
-                # issued at - time
-                'iat': now,
-                # expires after one hour.
-                'exp': now + 3600,
-                # issuer - client email
-                'iss': service_account_email,
-                # the URL of the target service.
-                'target_audience': '{}/web-client-id'.format(self.base_url),
-                # Google token endpoints URL
-                'aud': 'https://www.googleapis.com/oauth2/v4/token'
-            }
-
-            # sign the payload with the signer
-            return jwt.encode(credentials.signer, payload)
+        def create_credentials(self):
+            """Create credentials for talking to an endpoints API."""
+            id_token = self.get_id_token_new()
+            credentials = creds.Credentials()
+            credentials.token = id_token
+            return credentials
 
         def get_id_token_new(self):
             """Return an ID token that can be used to create credentials."""
             credentials, project = default()
-            audience = 'https://www.googleapis.com/oauth2/v4/token'
+            iam = build('iamcredentials', 'v1', credentials=credentials)
+
+            # create audience
+            audience = '{}/web-client-id'.format(self.base_url)
+
+            # create service account name
             email = '{}@appspot.gserviceaccount.com'.format(project)
             name = 'projects/-/serviceAccounts/{}'.format(email)
+
+            # create body for request
             body = {
                 'audience': audience,
                 'delegates': [],
                 'includeEmail': True,
             }
-            iam = build('iamcredentials', 'v1', credentials=credentials)
-            response = iam.projects().serviceAccounts().generateIdToken(
+
+            # return token
+            return iam.projects().serviceAccounts().generateIdToken(
                 name=name,
                 body=body,
-            ).execute()
-            self.id_token = response.get('token')
-            return self.id_token
-
-        def get_id_token(self):
-            """Return an access token for connecting to Endpoints APIs."""
-            headers = {"Content-Type": "application/x-www-form-urlencoded"}
-            params = {
-                'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-                'assertion': self.generate_signed_jwt()
-            }
-            url = 'https://www.googleapis.com/oauth2/v4/token'
-            # send the JWT to Google Token endpoints to request Google ID token
-            return requests.post(url, data=params, headers=headers).json().get('id_token')
+            ).execute().get('token')
 
         #
         # Basic Methods (GET, POST, etc.)
