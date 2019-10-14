@@ -27,9 +27,10 @@ def main():
         base_url='https://broad-bitsdb-api.appspot.com',
         # debug=True
     )
-    request = client.service.people().list()
+    request = client.service.people().list(limit=1000)
     people = request.execute().get('items', [])
     print('People: {}'.format(len(people)))
+    # print(people)
 
 
 if __name__ == '__main__':

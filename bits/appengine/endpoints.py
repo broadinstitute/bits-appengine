@@ -56,9 +56,8 @@ class Endpoints(object):
         def generate_signed_jwt(self):
             """Generate a signed java web token for service account."""
             # generate default credentials
-            credentials, _ = default()
-            print('Credentials: {}'.format(credentials))
-            print(dir(credentials))
+            credentials, project = default()
+            service_account_email = '{}@appspot.gserviceaccount.com'.format(project)
 
             # get time now
             now = int(time.time())
@@ -70,16 +69,34 @@ class Endpoints(object):
                 # expires after one hour.
                 'exp': now + 3600,
                 # issuer - client email
-                'iss': credentials.service_account_email,
+                'iss': service_account_email,
                 # the URL of the target service.
                 'target_audience': '{}/web-client-id'.format(self.base_url),
                 # Google token endpoints URL
                 'aud': 'https://www.googleapis.com/oauth2/v4/token'
             }
-            print('JWT Payload: {}'.format(payload))
 
             # sign the payload with the signer
             return jwt.encode(credentials.signer, payload)
+
+        def get_id_token_new(self):
+            """Return an ID token that can be used to create credentials."""
+            credentials, project = default()
+            audience = 'https://www.googleapis.com/oauth2/v4/token'
+            email = '{}@appspot.gserviceaccount.com'.format(project)
+            name = 'projects/-/serviceAccounts/{}'.format(email)
+            body = {
+                'audience': audience,
+                'delegates': [],
+                'includeEmail': True,
+            }
+            iam = build('iamcredentials', 'v1', credentials=credentials)
+            response = iam.projects().serviceAccounts().generateIdToken(
+                name=name,
+                body=body,
+            ).execute()
+            self.id_token = response.get('token')
+            return self.id_token
 
         def get_id_token(self):
             """Return an access token for connecting to Endpoints APIs."""
