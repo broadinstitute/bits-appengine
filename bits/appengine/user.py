@@ -31,7 +31,7 @@ class User(object):
         self.id = None
 
         # get the logged-in user
-        if self.is_dev:
+        if self.debug_user and self.is_dev:
             # get the debug user
             self.get_debug_user()
         else:
@@ -59,8 +59,8 @@ class User(object):
     def get_current_user(self):
         """Return the current user."""
         # define headers
-        user_email_header = 'X-Goog-Authenticated-User-Email'
-        user_id_header = 'X-Goog-Authenticated-User-ID'
+        user_email_header = 'x-goog-authenticated-user-email'
+        user_id_header = 'x-goog-authenticated-user-id'
 
         # get Google IAP user's email and id from headers
         self.email = request.headers.get(user_email_header).replace('accounts.google.com:', '')
