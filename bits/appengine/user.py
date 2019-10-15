@@ -87,7 +87,7 @@ class User(object):
         """Return the user info from the database."""
         if self.database == 'firestore':
             return self.get_stored_firestore_user()
-        elif self.database == 'database':
+        elif self.database == 'datastore':
             return self.get_stored_datastore_user()
         else:
             logging.error('Unsupported database: {}'.format(self.database))
