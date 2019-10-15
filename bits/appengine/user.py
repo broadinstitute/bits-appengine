@@ -74,12 +74,18 @@ class User(object):
     def get_stored_datastore_user(self):
         """Return the user info from datastore."""
         client = datastore.Client(project=self.project)
-        return client.get(client.key(self.collection, self.id))
+        if not self.id:
+            return
+        user = client.get(client.key(self.collection, self.id))
+        if user and user.get('admin'):
+            self.admin = True
 
     def get_stored_firestore_user(self):
         """Return the user info from firestore."""
-        db = firestore.Client(project=self.project)
-        user = db.collection(self.collection).document(self.id).get().to_dict()
+        client = firestore.Client(project=self.project)
+        if not self.id:
+            return
+        user = client.collection(self.collection).document(self.id).get().to_dict()
         if user and user.get('admin'):
             self.admin = True
 
