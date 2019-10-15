@@ -31,7 +31,7 @@ class User(object):
         self.id = None
 
         # get the logged-in user
-        if self.debug_user and self.is_dev:
+        if self.debug_user and self.is_dev():
             # get the debug user
             self.get_debug_user()
         else:
