@@ -105,8 +105,9 @@ class User(object):
 
     def is_dev(self):
         """Return true if we are in the dev environment."""
-        if not os.getenv('GAE_DEPLOYMENT_ID'):
-            return True
+        if os.getenv('GAE_ENV').startswith('standard'):
+            return False
+        return True
 
     def role(self):
         """Return the user's role."""
