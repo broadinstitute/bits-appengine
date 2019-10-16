@@ -105,7 +105,7 @@ class User(object):
 
     def is_dev(self):
         """Return true if we are in the dev environment."""
-        if os.getenv('GAE_ENV').startswith('standard'):
+        if os.getenv('GAE_ENV', '').startswith('standard'):
             return False
         return True
 
