@@ -5,9 +5,13 @@
 import os
 import sys
 
+from bits.auth import Auth
+from bits.settings import Settings
+
 # add bitsapiclient to the path
 mypath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(mypath, "bits"))
+# sys.path.append(os.path.join(mypath, "bits-api-python-client"))
 
 from bits.appengine import AppEngine  # noqa
 from bits.appengine.endpoints import Endpoints  # noqa
@@ -17,6 +21,9 @@ from bits.appengine.endpoints import Endpoints  # noqa
 #     'id': '111375498507364395026',
 # }
 
+# settings = Settings().get()
+# auth = Auth(settings)
+
 
 def main():
     """Execute the main function."""
@@ -25,12 +32,15 @@ def main():
         api='bitsdb',
         api_key='AIzaSyAOvXcdqHE3ebDRbsIkhbwvaW7N-GKMREA',
         base_url='https://broad-bitsdb-api.appspot.com',
-        # debug=True
+        version='v1',
+        verbose=True,
     )
-    request = client.service.people().list(limit=1000)
-    people = request.execute().get('items', [])
+    # client = auth.bitsdbapi()
+    people = client.service.people().list(limit=1000).execute().get('items', [])
+    # people = request.execute().get('items', [])
     print('People: {}'.format(len(people)))
     # print(people)
+    # print(client.service.buildings().list().execute().get('items', []))
 
 
 if __name__ == '__main__':
