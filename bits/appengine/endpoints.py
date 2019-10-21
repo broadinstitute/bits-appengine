@@ -74,7 +74,10 @@ class Endpoints(object):
             audience = '{}/web-client-id'.format(self.base_url)
 
             # create service account name
-            email = '{}@appspot.gserviceaccount.com'.format(project)
+            email = credentials.service_account_email
+
+            if not email:
+                email = '{}@appspot.gserviceaccount.com'.format(project)
             name = 'projects/-/serviceAccounts/{}'.format(email)
 
             # create body for request
