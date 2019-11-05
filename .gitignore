@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 etc
+bits-api-python-client
