@@ -75,7 +75,7 @@ class Endpoints(object):
 
             # create service account name
             email = credentials.service_account_email
-            if not email:
+            if not email or email == 'default':
                 email = '{}@appspot.gserviceaccount.com'.format(project)
             name = 'projects/-/serviceAccounts/{}'.format(email)
 
