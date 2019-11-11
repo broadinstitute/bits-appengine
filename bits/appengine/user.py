@@ -63,8 +63,8 @@ class User(object):
         user_id_header = 'x-goog-authenticated-user-id'
 
         # get Google IAP user's email and id from headers
-        self.email = request.headers.get(user_email_header).replace('accounts.google.com:', '')
-        self.id = request.headers.get(user_id_header).replace('accounts.google.com:', '')
+        self.email = request.headers.get(user_email_header, '').replace('accounts.google.com:', '')
+        self.id = request.headers.get(user_id_header, '').replace('accounts.google.com:', '')
 
     def get_debug_user(self):
         """Return the debug user."""
