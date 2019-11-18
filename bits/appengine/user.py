@@ -3,6 +3,8 @@
 
 import os
 import logging
+import sys
+
 from flask import request
 from google.cloud import datastore
 from google.cloud import firestore
@@ -25,6 +27,14 @@ class User(object):
         self.database = database
         self.debug_user = debug_user
         self.project = project
+
+        if self.database == 'datastore':
+            self.client = datastore.Client(project=self.project)
+        elif self.database == 'firestore':
+            self.client = firestore.Client(project=self.project)
+        else:
+            logging.error('Unsupported database: {}'.format(self.database))
+            sys.exit()
 
         self.admin = False
         self.email = None
@@ -71,59 +81,6 @@ class User(object):
         self.email = self.debug_user.get('email')
         self.id = self.debug_user.get('id')
 
-    def get_stored_datastore_user(self):
-        """Return the user info from datastore."""
-        client = datastore.Client(project=self.project)
-        if not self.id:
-            return
-        user = client.get(client.key(self.collection, self.id))
-        if user and user.get('admin'):
-            self.admin = True
-
-    def get_stored_datastore_users(self):
-        """Return a list of users from datastore."""
-        client = datastore.Client(project=self.project)
-        query = client.query(kind=self.collection)
-        return list(query.fetch())
-
-    def get_stored_firestore_user(self):
-        """Return the user info from firestore."""
-        client = firestore.Client(project=self.project)
-        if not self.id:
-            return
-        user = client.collection(self.collection).document(self.id).get().to_dict()
-        if user and user.get('admin'):
-            self.admin = True
-
-    def get_stored_firestore_users(self):
-        """Return a list of users from firestore."""
-        client = firestore.Client(project=self.project)
-        users = []
-        for doc in client.collection(self.collection).stream():
-            user = doc.to_dict()
-            if 'id' not in user:
-                user['id'] = doc.id
-            users.append(user)
-        return users
-
-    def get_stored_user(self):
-        """Return the user info from the database."""
-        if self.database == 'firestore':
-            return self.get_stored_firestore_user()
-        elif self.database == 'datastore':
-            return self.get_stored_datastore_user()
-        else:
-            logging.error('Unsupported database: {}'.format(self.database))
-
-    def get_stored_users(self):
-        """Return a list of users from the database."""
-        if self.database == 'firestore':
-            return self.get_stored_firestore_users()
-        elif self.database == 'datastore':
-            return self.get_stored_datastore_users()
-        else:
-            logging.error('Unsupported database: {}'.format(self.database))
-
     def is_admin(self):
         """Return true if the user is an admin."""
         if self.admin:
@@ -141,3 +98,103 @@ class User(object):
         if self.is_admin():
             role = 'admin'
         return role
+
+    #
+    # Datastore Users
+    #
+    def get_datastore_user(self, user_id):
+        """Return the user info from datastore."""
+        client = datastore.Client(project=self.project)
+        return client.get(client.key(self.collection, user_id))
+
+    def get_datastore_users(self):
+        """Return a list of users from datastore."""
+        client = datastore.Client(project=self.project)
+        query = client.query(kind=self.collection)
+        return list(query.fetch())
+
+    def get_stored_datastore_user(self):
+        """Return the user info from datastore."""
+        if not self.id:
+            return
+        user = self.get_datastore_user(self.id)
+        if user and user.get('admin'):
+            self.admin = True
+
+    def save_datastore_user(self, user):
+        """Save a user in datastore."""
+        client = datastore.Client(project=self.project)
+        user_id = user.get('id')
+        if not user_id:
+            return
+        key = client.key(self.collection, user_id)
+        entity = datastore.Entity(key)
+        entity.update(user)
+        return client.put(entity)
+
+    #
+    # Firestore Users
+    #
+    def get_firestore_user(self, user_id):
+        """Return the user info from firestore."""
+        client = firestore.Client(project=self.project)
+        return client.collection(self.collection).document(user_id).get().to_dict()
+
+    def get_firestore_users(self):
+        """Return a list of users from firestore."""
+        client = firestore.Client(project=self.project)
+        users = []
+        for doc in client.collection(self.collection).stream():
+            user = doc.to_dict()
+            if 'id' not in user:
+                user['id'] = doc.id
+            users.append(user)
+        return users
+
+    def get_stored_firestore_user(self):
+        """Return the user info from firestore."""
+        if not self.id:
+            return
+        user = self.get_firestore_user(self.id)
+        if user and user.get('admin'):
+            self.admin = True
+
+    def save_firestore_user(self, user):
+        """Save a user in firestore."""
+        client = firestore.Client(project=self.project)
+        user_id = user.get('id')
+        if not user_id:
+            return
+        return client.collection(self.collection).document(user_id).set(user)
+
+
+    #
+    # Generic User Functions
+    #
+    def get_stored_user(self):
+        """Return the user info from the database."""
+        if self.database == 'firestore':
+            return self.get_stored_firestore_user()
+        elif self.database == 'datastore':
+            return self.get_stored_datastore_user()
+
+    def get_user(self, user_id):
+        """Return the user info from the database."""
+        if self.database == 'firestore':
+            return self.get_stored_firestore_user()
+        elif self.database == 'datastore':
+            return self.get_stored_datastore_user()
+
+    def get_users(self):
+        """Return a list of users from the database."""
+        if self.database == 'firestore':
+            return self.get_firestore_users()
+        elif self.database == 'datastore':
+            return self.get_datastore_users()
+
+    def save_user(self, user):
+        """Save a user in the database."""
+        if self.database == 'firestore':
+            return self.save_firestore_user(user)
+        elif self.database == 'datastore':
+            return self.save_datastore_user(user)
