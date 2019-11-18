@@ -80,6 +80,12 @@ class User(object):
         if user and user.get('admin'):
             self.admin = True
 
+    def get_stored_datastore_users(self):
+        """Return a list of users from datastore."""
+        client = datastore.Client(project=self.project)
+        query = client.query(kind=self.collection)
+        return list(query.fetch())
+
     def get_stored_firestore_user(self):
         """Return the user info from firestore."""
         client = firestore.Client(project=self.project)
@@ -89,12 +95,32 @@ class User(object):
         if user and user.get('admin'):
             self.admin = True
 
+    def get_stored_firestore_users(self):
+        """Return a list of users from firestore."""
+        client = firestore.Client(project=self.project)
+        users = []
+        for doc in client.collection(self.collection).stream():
+            user = doc.to_dict()
+            if 'id' not in user:
+                user['id'] = doc.id
+            users.append(user)
+        return users
+
     def get_stored_user(self):
         """Return the user info from the database."""
         if self.database == 'firestore':
             return self.get_stored_firestore_user()
         elif self.database == 'datastore':
             return self.get_stored_datastore_user()
+        else:
+            logging.error('Unsupported database: {}'.format(self.database))
+
+    def get_stored_users(self):
+        """Return a list of users from the database."""
+        if self.database == 'firestore':
+            return self.get_stored_firestore_users()
+        elif self.database == 'datastore':
+            return self.get_stored_datastore_users()
         else:
             logging.error('Unsupported database: {}'.format(self.database))
 

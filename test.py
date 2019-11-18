@@ -28,6 +28,10 @@ from bits.appengine.endpoints import Endpoints  # noqa
 def main():
     """Execute the main function."""
     # appengine = AppEngine()
+    # users = appengine.user().get_stored_users()
+    # print('Users: {}'.format(len(users)))
+    # return
+
     client = Endpoints.Client(
         api='bitsdb',
         api_key='AIzaSyAOvXcdqHE3ebDRbsIkhbwvaW7N-GKMREA',
