@@ -167,7 +167,6 @@ class User(object):
             return
         return client.collection(self.collection).document(user_id).set(user)
 
-
     #
     # Generic User Functions
     #
@@ -181,9 +180,9 @@ class User(object):
     def get_user(self, user_id):
         """Return the user info from the database."""
         if self.database == 'firestore':
-            return self.get_stored_firestore_user()
+            return self.get_firestore_user(user_id)
         elif self.database == 'datastore':
-            return self.get_stored_datastore_user()
+            return self.get_datastore_user(user_id)
 
     def get_users(self):
         """Return a list of users from the database."""
