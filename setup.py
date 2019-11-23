@@ -19,7 +19,7 @@ from setuptools import setup, find_packages
 setup(
     name='bits-appengine',
 
-    version='1.1.10',
+    version='1.1.11',
 
     description='BITS App Engine',
     long_description='',
@@ -29,7 +29,8 @@ setup(
 
     license='Apache Software License',
 
-    packages=find_packages(),
+    include_package_data=True,
+
     install_requires=[
         'flask==1.0.2',
         'google-api-python-client',
@@ -39,6 +40,8 @@ setup(
         'httplib2',
         'oauth2client',
     ],
+
+    packages=find_packages(),
 
     zip_safe=False,
 )
