@@ -4,7 +4,7 @@
         <!-- Bav Bar Brand -->
         <a class="navbar-brand" href="/">
             <img class="bg-light" src="/images/logo.svg" width="28" height="30" class="d-inline-block align-top" alt="">
-            {{ app_name }}{{ " - DEV" if is_dev }}
+            &nbsp;{{ app_name }}{{ " - DEV" if is_dev }}
         </a>
 
         <!-- Nav Bar Toggler -->
@@ -18,7 +18,7 @@
             {% for link in links -%}
                 {% if ('admin' not in link or not link.admin) or (link.admin and user.admin) -%}
                 <li class="nav-item{{ " active" if link.url == request.path }}">
-                    <a class="nav-link" href="{{ link.url }}">
+                    <a class="nav-link" href="{{ link.url.replace('[[USER_ID]]', user.id) }}">
                         {{ link.name }}</a>
                 </li>
                 {%- endif %}
