@@ -12,7 +12,7 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None):
+    def __init__(self, appengine, app_name=None, links=None, repo=None, topnav_padding=False, body_class="container", extended_footer=None):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
@@ -25,6 +25,10 @@ class Theme(object):
             extensions=['jinja2.ext.autoescape'],
             autoescape=True
         )
+
+        self.topnav_padding = topnav_padding
+        self.body_class = body_class
+        self.extended_footer = extended_footer
 
         self.now = datetime.datetime.utcnow()
         self.user = self.appengine.user
@@ -74,6 +78,8 @@ class Theme(object):
             topnav=topnav,
             body=body,
             footer=footer,
+            extended_footer=self.extended_footer,
+            body_class=self.body_class,
 
             # user information
             is_admin=self.user().admin,
@@ -84,12 +90,18 @@ class Theme(object):
     def render_topnav(self, repo=None):
         """Render the topnav for the main template."""
         template = self.jinja.get_template('topnav.html')
+        if self.topnav_padding:
+            topnav_padding = "navbar-fixed-top"
+        else:
+            topnav_padding = "fixed-top"
+
         return template.render(
             app_name=self.app_name,
             is_dev=self.user().is_dev(),
             links=self.links,
             request=request,
             user=self.user(),
+            topnav_padding=topnav_padding
         )
 
     # @app.route('/admin/users')
