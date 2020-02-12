@@ -12,7 +12,7 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None):
+    def __init__(self, appengine, app_name=None, links=None, repo=None, extended_footer=None, body_class="Container"):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
@@ -25,6 +25,9 @@ class Theme(object):
             extensions=['jinja2.ext.autoescape'],
             autoescape=True
         )
+
+        self.extended_footer = extended_footer
+        self.body_class = body_class
 
         self.now = datetime.datetime.utcnow()
         self.user = self.appengine.user
@@ -61,6 +64,14 @@ class Theme(object):
             request=request,
         )
 
+    def extended_footer(self, extended_footer):
+        """Render the extended footer for the main template."""
+        template = self.jinja.get_template('extended_footer.html')
+        return template.render(
+            app_name=self.app_name,
+            request=request,
+        )
+
     def render_theme(self, body, page_name=None):
         """Render the main template theme."""
         header = self.render_header(page_name=page_name)
@@ -74,6 +85,7 @@ class Theme(object):
             topnav=topnav,
             body=body,
             footer=footer,
+            body_class=self.body_class,
 
             # user information
             is_admin=self.user().admin,

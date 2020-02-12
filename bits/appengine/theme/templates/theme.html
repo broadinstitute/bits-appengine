@@ -8,12 +8,14 @@
 {{ topnav|safe }}
 
     <!-- Begin Main Container -->
-    <main role="main" class="container">
+    <main role="main" class="{{ body_class }}" >
     {{ body|safe }}
     </main>
     <!-- End Main Container -->
 
 {{ footer|safe }}
+
+{{ extended_footer|safe }}
 
 </body>
 </html>
