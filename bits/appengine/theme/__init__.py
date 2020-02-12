@@ -28,7 +28,7 @@ class Theme(object):
 
         self.extended_footer = extended_footer
         self.body_class = body_class
-        self.toppnav_fixed = topnav_fixed
+        self.topnav_padding = topnav_padding
 
         self.now = datetime.datetime.utcnow()
         self.user = self.appengine.user
@@ -90,17 +90,17 @@ class Theme(object):
     def render_topnav(self, repo=None):
         """Render the topnav for the main template."""
         template = self.jinja.get_template('topnav.html')
-        if self.toppnav_fixed:
-            topnav_fixed = "navbar-fixed-top"
+        if self.topnav_padding:
+            topnav_padding = "navbar-fixed-top"
         else:
-            topnav_fixed = "navbar-fixed"
+            topnav_padding = "navbar-fixed"
         return template.render(
             app_name=self.app_name,
             is_dev=self.user().is_dev(),
             links=self.links,
             request=request,
             user=self.user(),
-            topnav_fixed=topnav_fixed
+            topnav_padding=topnav_padding
         )
 
     # @app.route('/admin/users')
