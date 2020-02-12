@@ -12,7 +12,7 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None, extended_footer=None, body_class="Container", topnav_fixed=False):
+    def __init__(self, appengine, app_name=None, links=None, repo=None, extended_footer=None, body_class="Container", topnav_padding=False):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
@@ -93,14 +93,14 @@ class Theme(object):
         if self.toppnav_fixed:
             topnav_fixed = "navbar-fixed-top"
         else:
-            topnav_fixed = None
+            topnav_fixed = "navbar-fixed"
         return template.render(
             app_name=self.app_name,
             is_dev=self.user().is_dev(),
             links=self.links,
             request=request,
             user=self.user(),
-            topnav_fixed=toppnav_fixed
+            topnav_fixed=topnav_fixed
         )
 
     # @app.route('/admin/users')
