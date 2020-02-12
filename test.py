@@ -34,7 +34,7 @@ def main():
 
     client = Endpoints.Client(
         api='bitsdb',
-        api_key='AIzaSyAOvXcdqHE3ebDRbsIkhbwvaW7N-GKMREA',
+        api_key='****',
         base_url='https://broad-bitsdb-api.appspot.com',
         version='v1',
         verbose=True,
