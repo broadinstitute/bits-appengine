@@ -12,7 +12,7 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None, extended_footer=None, body_class="container", topnav_padding=False):
+    def __init__(self, appengine, app_name=None, links=None, repo=None, topnav_padding=False, body_class="container", extended_footer=None):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
@@ -26,9 +26,9 @@ class Theme(object):
             autoescape=True
         )
 
-        self.extended_footer = extended_footer
-        self.body_class = body_class
         self.topnav_padding = topnav_padding
+        self.body_class = body_class
+        self.extended_footer = extended_footer
 
         self.now = datetime.datetime.utcnow()
         self.user = self.appengine.user
