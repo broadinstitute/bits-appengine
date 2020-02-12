@@ -93,8 +93,8 @@ class Theme(object):
         if self.topnav_padding:
             topnav_padding = "navbar-fixed-top"
         else:
-            topnav_padding = "navbar-fixed"
-            
+            topnav_padding = "fixed-top"
+
         return template.render(
             app_name=self.app_name,
             is_dev=self.user().is_dev(),
