@@ -22,12 +22,14 @@ class Theme:
         body_class="container",
         extended_footer=None,
         topnav_padding=False,
+        version_num=None,
     ):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
         self.links = links
         self.repo = repo
+        self.version_num = version_num
 
         path = f"{os.path.dirname(os.path.abspath(__file__))}/templates"
         self.jinja = jinja2.Environment(
@@ -63,13 +65,14 @@ class Theme:
     def render_footer(self, repo=None):
         """Render the footer for the main template."""
         major, minor, _ = platform.python_version_tuple()
-        version = f"{major}.{minor}"
+        py_version = f"{major}.{minor}"
         template = self.jinja.get_template("footer.html")
         return template.render(
             analytics_tag=self.analytics_tag,
             now=self.now,
             repo=self.repo,
-            version=version,
+            py_version=py_version,
+            version_num=self.version_num
         )
 
     def render_header(self, page_name=None):
@@ -96,6 +99,7 @@ class Theme:
             footer=footer,
             body_class=self.body_class,
             extended_footer=self.extended_footer,
+            version_num=self.version_num,
             # user information
             is_admin=self.user().admin,
             is_dev=self.user().is_dev(),
