@@ -12,12 +12,13 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None, topnav_padding=False, body_class="container", extended_footer=None):
+    def __init__(self, appengine, app_name=None, links=None, repo=None, topnav_padding=False, body_class="container", extended_footer=None, version_num=None):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
         self.links = links
         self.repo = repo
+        self.version_num = version_num
 
         path = '{}/templates'.format(os.path.dirname(os.path.abspath(__file__)))
         self.jinja = jinja2.Environment(
@@ -54,6 +55,7 @@ class Theme(object):
         return template.render(
             now=self.now,
             repo=self.repo,
+            version_num=self.version_num
         )
 
     def render_header(self, page_name=None):
@@ -80,6 +82,7 @@ class Theme(object):
             footer=footer,
             extended_footer=self.extended_footer,
             body_class=self.body_class,
+            version_num=self.version_num,
 
             # user information
             is_admin=self.user().admin,
