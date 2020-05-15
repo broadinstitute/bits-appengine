@@ -5,8 +5,8 @@
 import os
 import sys
 
-from bits.auth import Auth
-from bits.settings import Settings
+# from bits.auth import Auth
+# from bits.settings import Settings
 
 # add bitsapiclient to the path
 mypath = os.path.dirname(os.path.realpath(__file__))

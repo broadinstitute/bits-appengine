@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Theme class file."""
 
 import datetime

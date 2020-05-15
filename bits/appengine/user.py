@@ -49,7 +49,7 @@ class User(object):
             self.get_current_user()
 
         # get stored user from the database
-        self.get_stored_user()
+        self.stored_user = self.get_stored_user()
 
         # set user as a dict
         self.user = {'email': self.email, 'id': self.id}
@@ -120,6 +120,7 @@ class User(object):
         user = self.get_datastore_user(self.id)
         if user and user.get('admin'):
             self.admin = True
+        return user
 
     def save_datastore_user(self, user):
         """Save a user in datastore."""
@@ -158,6 +159,7 @@ class User(object):
         user = self.get_firestore_user(self.id)
         if user and user.get('admin'):
             self.admin = True
+        return user
 
     def save_firestore_user(self, user):
         """Save a user in firestore."""

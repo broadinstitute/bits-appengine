@@ -1,14 +1,11 @@
+# -*- coding: utf-8 -*-
 """Endpoints Class file."""
 
-# import base64
-# import json
 import httplib2
 import requests
-# import time
 
 from apiclient.discovery import build
-from google.auth import default, jwt
-from google.auth import credentials as creds
+from google.auth import default
 from oauth2client import client
 
 
