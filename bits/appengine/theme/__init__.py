@@ -64,6 +64,7 @@ class Theme(object):
         """Render the footer for the main template."""
         template = self.jinja.get_template('footer.html')
         return template.render(
+            analytics_tag=self.analytics_tag,
             now=self.now,
             repo=self.repo,
         )
@@ -90,7 +91,6 @@ class Theme(object):
             topnav=topnav,
             body=body,
             footer=footer,
-            analytics_tag=self.analytics_tag,
             body_class=self.body_class,
             extended_footer=self.extended_footer,
 
