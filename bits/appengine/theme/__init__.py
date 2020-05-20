@@ -13,7 +13,17 @@ from flask import redirect, request
 class Theme(object):
     """Theme class."""
 
-    def __init__(self, appengine, app_name=None, links=None, repo=None, topnav_padding=False, body_class="container", extended_footer=None):
+    def __init__(
+            self,
+            appengine,
+            app_name=None,
+            links=None,
+            repo=None,
+            analytics_tag=None,
+            body_class="container",
+            extended_footer=None,
+            topnav_padding=False,
+    ):
         """Initialize a class instance."""
         self.appengine = appengine
         self.app_name = app_name
@@ -27,9 +37,10 @@ class Theme(object):
             autoescape=True
         )
 
-        self.topnav_padding = topnav_padding
+        self.analytics_tag = analytics_tag
         self.body_class = body_class
         self.extended_footer = extended_footer
+        self.topnav_padding = topnav_padding
 
         self.now = datetime.datetime.utcnow()
         self.user = self.appengine.user
@@ -79,8 +90,9 @@ class Theme(object):
             topnav=topnav,
             body=body,
             footer=footer,
-            extended_footer=self.extended_footer,
+            analytics_tag=self.analytics_tag,
             body_class=self.body_class,
+            extended_footer=self.extended_footer,
 
             # user information
             is_admin=self.user().admin,
