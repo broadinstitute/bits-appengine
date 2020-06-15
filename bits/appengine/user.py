@@ -102,6 +102,11 @@ class User(object):
     #
     # Datastore Users
     #
+    def delete_datastore_user(self, user_id):
+        """Delete a user from datastore.."""
+        client = datastore.Client(project=self.project)
+        return client.key(self.collection, user_id).delete()
+
     def get_datastore_user(self, user_id):
         """Return the user info from datastore."""
         client = datastore.Client(project=self.project)
@@ -136,6 +141,11 @@ class User(object):
     #
     # Firestore Users
     #
+    def delete_firestore_user(self, user_id):
+        """Delete a user from firestore."""
+        client = firestore.Client(project=self.project)
+        return client.collection(self.collection).document(user_id).delete()
+
     def get_firestore_user(self, user_id):
         """Return the user info from firestore."""
         client = firestore.Client(project=self.project)
@@ -172,6 +182,13 @@ class User(object):
     #
     # Generic User Functions
     #
+    def delete_user(self, user_id):
+        """Delete a user from the database."""
+        if self.database == 'firestore':
+            return self.delete_firestore_user(user_id)
+        elif self.database == 'datastore':
+            return self.delete_datastore_user(user_id)
+
     def get_stored_user(self):
         """Return the user info from the database."""
         if self.database == 'firestore':

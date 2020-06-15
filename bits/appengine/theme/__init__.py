@@ -229,10 +229,9 @@ class Theme(object):
         ))
         return redirect('/admin/users')
 
-    # # @app.route('/admin/users/<google_id>/delete')
-    # def users_delete(self, google_id):
-    #     """Return the admin delete page."""
-    #     if not is_admin():
-    #         return redirect('/')
-    #     firestore_db.app.collection('users').document(google_id).delete()
-    #     return redirect('/admin/users')
+    def admin_users_delete(self, google_id):
+        """Delete a user and redirect t ousers page.."""
+        if not self.user().is_admin():
+            return redirect('/')
+        self.user().delete_user(google_id)
+        return redirect('/admin/users')
