@@ -16,7 +16,9 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav mr-auto">
             {% for link in links -%}
-                {% if ('admin' not in link or not link.admin) or (link.admin and user.admin) -%}
+                {% if ((not link.get("admin") and not link.get("user"))
+                    or (link.get("admin") and user.admin)
+                    or (link.get("user") and user.stored_user)) -%}
                 <li class="nav-item{{ " active" if link.url == request.path }}">
                     <a class="nav-link" href="{{ link.url.replace('[[USER_ID]]', user.id) }}">
                         {{ link.name }}</a>
