@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Theme class file."""
-
 import datetime
 import jinja2
 import os
+import platform
 import sys
 
 from google.cloud import firestore
@@ -62,11 +62,14 @@ class Theme(object):
 
     def render_footer(self, repo=None):
         """Render the footer for the main template."""
+        major, minor, _ = platform.python_version_tuple()
+        version = f"{major}.{minor}"
         template = self.jinja.get_template('footer.html')
         return template.render(
             analytics_tag=self.analytics_tag,
             now=self.now,
             repo=self.repo,
+            version=version,
         )
 
     def render_header(self, page_name=None):
