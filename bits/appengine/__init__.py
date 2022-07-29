@@ -14,6 +14,8 @@ class AppEngine(object):
         config_database='firestore',
         config_project=None,
         debug_user=None,
+        people_collection='people_people',
+        people_project='broad-bitsdb-firestore',
         user_collection='users',
         user_database='firestore',
         user_project=None,
@@ -23,6 +25,8 @@ class AppEngine(object):
         self.config_database = config_database
         self.config_project = config_project
         self.debug_user = debug_user
+        self.people_collection = people_collection
+        self.people_project = people_project
         self.user_collection = user_collection
         self.user_database = user_database
         self.user_project = user_project

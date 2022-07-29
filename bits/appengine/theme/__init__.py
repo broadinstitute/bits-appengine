@@ -48,8 +48,8 @@ class Theme(object):
     def _get_person(self, email):
         """Return a person record from firestore."""
         # get person based on email address
-        client = firestore.Client(project='broad-bitsdb-firestore')
-        query = client.collection('people_people').where('emails', 'array_contains', email)
+        client = firestore.Client(project=self.appengine.people_project)
+        query = client.collection(self.appengine.people_collection).where('emails', 'array_contains', email)
         try:
             results = list(query.stream())
         except Exception as e:
