@@ -1,20 +1,21 @@
-# -*- coding: utf-8 -*-
 """BITSdb API class file."""
 
 import google.auth
-from .endpoints import Endpoints
+
 from bits.google import Google
+
+from .endpoints import Endpoints
 
 
 class BITSdb(Endpoints.Client):
     """BITSdb class."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         api_key=None,
-        base_url='http://localhost:8080',
-        api='bitsdb',
-        version='v1',
+        base_url="http://localhost:8080",
+        api="bitsdb",
+        version="v1",
         verbose=False,
     ):
         """Initialize a BITSdb class instance."""
@@ -31,8 +32,8 @@ class BITSdb(Endpoints.Client):
     def get_datastore_entities(self, kind):
         """Return a list of entities from datastore."""
         _, project = google.auth.default()
-        datastore_project = project.replace('-app', '-api')
-        print('Datastore Project: {}'.format(datastore_project))
+        datastore_project = project.replace("-app", "-api")
+        print(f"Datastore Project: {datastore_project}")
         g = Google()
         data = []
         for entity in g.datastore(datastore_project).list_entities(kind):
@@ -43,8 +44,8 @@ class BITSdb(Endpoints.Client):
     def get_firestore_docs(self, collection):
         """Return a list of docs from firestore."""
         _, project = google.auth.default()
-        firestore_project = project.replace('-app', '')
-        print('Firestore Project: {}'.format(firestore_project))
+        firestore_project = project.replace("-app", "")
+        print(f"Firestore Project: {firestore_project}")
         g = Google()
         data = []
         for doc in g.firestore(firestore_project).get_docs(collection):
@@ -53,7 +54,7 @@ class BITSdb(Endpoints.Client):
         # return g.firestore(firestore_project).get_docs(collection)
 
     # convert a list to a dict
-    def to_json(self, items, key='id'):
+    def to_json(self, items, key="id"):
         """Return a dict of items."""
         data = {}
         for i in items:
@@ -73,7 +74,7 @@ class BITSdb(Endpoints.Client):
         #     return accounts
         # params = {'limit': 1000}
         # accounts = self.get_paged_list(self.bitsdb.accounts(), params)
-        accounts = self.get_datastore_entities('Account')
+        accounts = self.get_datastore_entities("Account")
         # self.save_memcache_group('accounts', accounts, 'id')
         return accounts
 
@@ -88,7 +89,7 @@ class BITSdb(Endpoints.Client):
         # ad_groups = memcache.get(key)
         # if ad_groups is not None:
         #     return ad_groups
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         ad_groups = self.get_paged_list(self.bitsdb.ad().groups(), params)
         # memcache.add(key, ad_groups, self.memcache_time)
         return ad_groups
@@ -105,7 +106,7 @@ class BITSdb(Endpoints.Client):
     def get_ad_groups_syncs(self):
         """Return a list of AdGroupSync from BITSdb."""
         response = self.bitsdb.ad().groups().syncs().list().execute()
-        return response.get('items', [])
+        return response.get("items", [])
 
     # ad users
     def get_ad_user(self, user):
@@ -117,7 +118,7 @@ class BITSdb(Endpoints.Client):
         # ad_users = self.get_memcache_group('ad_users')
         # if ad_users is not None:
         #     return ad_users
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         ad_users = self.get_paged_list(self.bitsdb.ad().users(), params)
         # self.save_memcache_group('ad_users', ad_users, 'username')
         return ad_users
@@ -137,7 +138,7 @@ class BITSdb(Endpoints.Client):
         # aws_accounts = memcache.get(key)
         # if aws_accounts is not None:
         #     return aws_accounts
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         aws_accounts = self.get_paged_list(self.bitsdb.aws().accounts(), params)
         # memcache.add(key, aws_accounts, self.memcache_time)
         return aws_accounts
@@ -156,7 +157,7 @@ class BITSdb(Endpoints.Client):
         # costobjects = self.get_memcache_group('costobjects')
         # if costobjects is not None:
         #     return costobjects
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         costobjects = self.get_paged_list(self.bitsdb.costobjects(), params)
         # self.save_memcache_group('costobjects', costobjects, 'costobject')
         return costobjects
@@ -170,8 +171,10 @@ class BITSdb(Endpoints.Client):
         # dns_cname_records = memcache.get(key)
         # if dns_cname_records is not None:
         #     return dns_cname_records
-        params = {'limit': 1000}
-        dns_cname_records = self.get_paged_list(self.bitsdb.dns().cname_records(), params)
+        params = {"limit": 1000}
+        dns_cname_records = self.get_paged_list(
+            self.bitsdb.dns().cname_records(), params
+        )
         # memcache.add(key, dns_cname_records, self.memcache_time)
         return dns_cname_records
 
@@ -182,7 +185,7 @@ class BITSdb(Endpoints.Client):
         # dns_mx_records = memcache.get(key)
         # if dns_mx_records is not None:
         #     return dns_mx_records
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         dns_mx_records = self.get_paged_list(self.bitsdb.dns().mx_records(), params)
         # memcache.add(key, dns_mx_records, self.memcache_time)
         return dns_mx_records
@@ -194,7 +197,7 @@ class BITSdb(Endpoints.Client):
         # dns_ns_records = memcache.get(key)
         # if dns_ns_records is not None:
         #     return dns_ns_records
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         dns_ns_records = self.get_paged_list(self.bitsdb.dns().ns_records(), params)
         # memcache.add(key, dns_ns_records, self.memcache_time)
         return dns_ns_records
@@ -205,7 +208,7 @@ class BITSdb(Endpoints.Client):
         # filesystems = self.get_memcache_group('filesystems')
         # if filesystems is not None:
         #     return filesystems
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         filesystems = self.get_paged_list(self.bitsdb.filesystems(), params)
         # self.save_memcache_group('filesystems', filesystems, 'server')
         return filesystems
@@ -222,7 +225,7 @@ class BITSdb(Endpoints.Client):
     def get_github_teams_syncs(self):
         """Return a list of GithubTeamSync from BITSdb."""
         response = self.bitsdb.github().teams().syncs().list().execute()
-        return response.get('items', [])
+        return response.get("items", [])
 
     # github teams
     def get_github_team(self, team_id):
@@ -235,7 +238,7 @@ class BITSdb(Endpoints.Client):
         # github_teams = memcache.get(key)
         # if github_teams is not None and not refresh:
         #     return github_teams
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         github_teams = self.get_paged_list(self.bitsdb.github().teams(), params)
         # memcache.add(key, github_teams, self.memcache_time)
         return github_teams
@@ -247,7 +250,7 @@ class BITSdb(Endpoints.Client):
         # github_users = memcache.get(key)
         # if github_users is not None:
         #     return github_users
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         github_users = self.get_paged_list(self.bitsdb.github().users(), params)
         # memcache.add(key, github_users, self.memcache_time)
         return github_users
@@ -267,7 +270,7 @@ class BITSdb(Endpoints.Client):
         # gnarwls = memcache.get(key)
         # if gnarwls is not None:
         #     return gnarwls
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         gnarwls = self.get_paged_list(self.bitsdb.gnarwls(), params)
         # memcache.add(key, gnarwls, self.memcache_time)
         return gnarwls
@@ -279,8 +282,10 @@ class BITSdb(Endpoints.Client):
         # google_billing_accounts = memcache.get(key)
         # if google_billing_accounts is not None:
         #     return google_billing_accounts
-        params = {'limit': 1000}
-        google_billing_accounts = self.get_paged_list(self.bitsdb.google().billingaccounts(), params)
+        params = {"limit": 1000}
+        google_billing_accounts = self.get_paged_list(
+            self.bitsdb.google().billingaccounts(), params
+        )
         # memcache.add(key, google_billing_accounts, self.memcache_time)
         return google_billing_accounts
 
@@ -295,7 +300,7 @@ class BITSdb(Endpoints.Client):
         # google_groups = memcache.get(key)
         # if google_groups is not None:
         #     return google_groups
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         google_groups = self.get_paged_list(self.bitsdb.google().groups(), params)
         # memcache.add(key, google_groups, self.memcache_time)
         return google_groups
@@ -311,7 +316,7 @@ class BITSdb(Endpoints.Client):
         # google_users = memcache.get(key)
         # if google_users is not None:
         #     return google_users
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         google_users = self.get_paged_list(self.bitsdb.google().users(), params)
         # memcache.add(key, google_users, self.memcache_time)
         return google_users
@@ -324,7 +329,7 @@ class BITSdb(Endpoints.Client):
         #     return hosts
         # params = {'limit': 1000}
         # hosts = self.get_paged_list(self.bitsdb.hosts(), params)
-        hosts = self.get_datastore_entities('Host')
+        hosts = self.get_datastore_entities("Host")
         # self.save_memcache_group('hosts', hosts, 'name')
         return hosts
 
@@ -335,7 +340,7 @@ class BITSdb(Endpoints.Client):
         # investigators = memcache.get(key)
         # if investigators is not None:
         #     return investigators
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         investigators = self.get_paged_list(self.bitsdb.investigators(), params)
         # memcache.add(key, investigators, self.memcache_time)
         return investigators
@@ -347,7 +352,7 @@ class BITSdb(Endpoints.Client):
         # isilon_quotas = memcache.get(key)
         # if isilon_quotas is not None:
         #     return isilon_quotas
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         isilon_quotas = self.get_paged_list(self.bitsdb.isilon().quotas(), params)
         # memcache.add(key, isilon_quotas, self.memcache_time)
         return isilon_quotas
@@ -359,7 +364,7 @@ class BITSdb(Endpoints.Client):
         # newhires = memcache.get(key)
         # if newhires is not None:
         #     return newhires
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         newhires = self.get_paged_list(self.bitsdb.newhires(), params)
         # memcache.add(key, newhires, self.memcache_time)
         return newhires
@@ -380,7 +385,7 @@ class BITSdb(Endpoints.Client):
         #     nicknames = memcache.get(key)
         #     if nicknames is not None:
         #         return nicknames
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         nicknames = self.get_paged_list(self.bitsdb.nicknames(), params)
         # memcache.add(key, nicknames, self.memcache_time)
         return nicknames
@@ -397,7 +402,7 @@ class BITSdb(Endpoints.Client):
         #     return people
         # params = {'limit': 1000}
         # people = self.get_paged_list(self.bitsdb.people(), params)
-        people = self.get_datastore_entities('Person')
+        people = self.get_datastore_entities("Person")
         # self.save_memcache_group('people', people, 'username')
         return people
 
@@ -408,7 +413,7 @@ class BITSdb(Endpoints.Client):
         # quotes = memcache.get(key)
         # if quotes is not None:
         #     return quotes
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         quotes = self.get_paged_list(self.bitsdb.quotes(), params)
         # memcache.add(key, quotes, self.memcache_time)
         return quotes
@@ -424,7 +429,7 @@ class BITSdb(Endpoints.Client):
         # slack_usergroups = memcache.get(key)
         # if slack_usergroups is not None:
         #     return slack_usergroups
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         slack_usergroups = self.get_paged_list(self.bitsdb.slack().usergroups(), params)
         # memcache.add(key, slack_usergroups, self.memcache_time)
         return slack_usergroups
@@ -441,7 +446,7 @@ class BITSdb(Endpoints.Client):
     def get_slack_usergroups_syncs(self):
         """Return a list of SlackUsergroupsSync from BITSdb."""
         response = self.bitsdb.slack().usergroups().syncs().list().execute()
-        return response.get('items', [])
+        return response.get("items", [])
 
     # space
     def get_buildings(self):
@@ -450,7 +455,7 @@ class BITSdb(Endpoints.Client):
         # buildings = memcache.get(key)
         # if buildings is not None:
         #     return buildings
-        params = {'limit': 100}
+        params = {"limit": 100}
         buildings = self.get_paged_list(self.bitsdb.buildings(), params)
         # memcache.add(key, buildings, self.memcache_time)
         return buildings
@@ -461,7 +466,7 @@ class BITSdb(Endpoints.Client):
         # desks = memcache.get(key)
         # if desks is not None:
         #     return desks
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         desks = self.get_paged_list(self.bitsdb.desks(), params)
         # memcache.add(key, desks, self.memcache_time)
         return desks
@@ -472,7 +477,7 @@ class BITSdb(Endpoints.Client):
         # rooms = memcache.get(key)
         # if rooms is not None:
         #     return rooms
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         rooms = self.get_paged_list(self.bitsdb.rooms(), params)
         # memcache.add(key, rooms, self.memcache_time)
         return rooms
@@ -483,7 +488,7 @@ class BITSdb(Endpoints.Client):
         # seats = memcache.get(key)
         # if seats is not None:
         #     return seats
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         seats = self.get_paged_list(self.bitsdb.seats(), params)
         # memcache.add(key, seats, self.memcache_time)
         return seats
@@ -503,7 +508,7 @@ class BITSdb(Endpoints.Client):
         # trustedtesters = memcache.get(key)
         # if trustedtesters is not None:
         #     return trustedtesters
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         trustedtesters = self.get_paged_list(self.bitsdb.trustedtesters(), params)
         # memcache.add(key, trustedtesters, self.memcache_time)
         return trustedtesters
@@ -515,7 +520,7 @@ class BITSdb(Endpoints.Client):
         # vlans = memcache.get(key)
         # if vlans is not None:
         #     return vlans
-        params = {'limit': 1000}
+        params = {"limit": 1000}
         vlans = self.get_paged_list(self.bitsdb.vlans(), params)
         # memcache.add(key, vlans, self.memcache_time)
         return vlans

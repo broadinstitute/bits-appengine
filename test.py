@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """Test script which demos module functionality."""
 
 import os
@@ -33,19 +32,19 @@ def main():
     # return
 
     client = Endpoints.Client(
-        api='bitsdb',
-        api_key='****',
-        base_url='https://broad-bitsdb-api.appspot.com',
-        version='v1',
+        api="bitsdb",
+        api_key="****",
+        base_url="https://broad-bitsdb-api.appspot.com",
+        version="v1",
         verbose=True,
     )
     # client = auth.bitsdbapi()
-    people = client.service.people().list(limit=1000).execute().get('items', [])
+    people = client.service.people().list(limit=1000).execute().get("items", [])
     # people = request.execute().get('items', [])
-    print('People: {}'.format(len(people)))
+    print(f"People: {len(people)}")
     # print(people)
     # print(client.service.buildings().list().execute().get('items', []))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

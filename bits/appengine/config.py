@@ -1,19 +1,18 @@
-# -*- coding: utf-8 -*-
 """App Engine Config class file."""
 
 import logging
-from google.cloud import datastore
-from google.cloud import firestore
+
+from google.cloud import datastore, firestore
 
 
-class Config(object):
+class Config:
     """Config class."""
 
     def __init__(
         self,
         appengine=None,
-        collection='settings',
-        database='firestore',
+        collection="settings",
+        database="firestore",
         project=None,
     ):
         """Initialize a class instance."""
@@ -27,12 +26,12 @@ class Config(object):
 
     def get_config(self, name=None):
         """Return the configuration settings as a dict."""
-        if self.database == 'firestore':
+        if self.database == "firestore":
             return self.get_config_from_firestore(name=name)
-        elif self.database == 'datastore':
+        elif self.database == "datastore":
             return self.get_config_from_datastore(name=name)
         else:
-            logging.error('Unsupported database: {}'.format(self.database))
+            logging.error(f"Unsupported database: {self.database}")
         return {}
 
     def get_config_from_datastore(self, name=None):
@@ -50,7 +49,7 @@ class Config(object):
         """Return the config from Firestore as a dict."""
         db = firestore.Client(project=self.project)
         config = {}
-        for doc in db.collection('settings').stream():
+        for doc in db.collection("settings").stream():
             config[doc.id] = doc.to_dict()
         if name:
             return config.get(name, {})

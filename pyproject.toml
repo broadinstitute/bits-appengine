@@ -32,12 +32,26 @@ httplib2 = "*"
 oauth2client = "*"
 toml = ">=0.9,<0.11"
 
-
 [tool.poetry.dev-dependencies]
 pydocstyle = "<7"
-pylama = "*"
 pylint = "*"
 pyyaml = "==6.0.1"
 twine = "*"
 wheel = "*"
 yamllint = "*"
+
+[tool.ruff]
+fixable = ["ALL"]
+line-length = 120
+select = [
+  "D",   # pydocstyle
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "I",   # isort
+  "N",   # pep8-naming
+  "PL",  # Pylint
+  "UP",  # pyupgrade
+]
+
+[tool.ruff.pydocstyle]
+convention = "google"
