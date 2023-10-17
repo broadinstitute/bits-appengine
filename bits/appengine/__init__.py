@@ -1,23 +1,22 @@
-# -*- coding: utf-8 -*-
 """Example class file."""
 
 from bits.appengine.config import Config
 from bits.appengine.user import User
 
 
-class AppEngine(object):
+class AppEngine:
     """AppEngine class."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
-        config_collection='settings',
-        config_database='firestore',
+        config_collection="settings",
+        config_database="firestore",
         config_project=None,
         debug_user=None,
-        people_collection='people_people',
-        people_project='broad-bitsdb-firestore',
-        user_collection='users',
-        user_database='firestore',
+        people_collection="people_people",
+        people_project="broad-bitsdb-firestore",
+        user_collection="users",
+        user_database="firestore",
         user_project=None,
     ):
         """Initialize an Example class instance."""

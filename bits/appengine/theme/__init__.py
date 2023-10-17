@@ -1,28 +1,27 @@
-# -*- coding: utf-8 -*-
 """Theme class file."""
 import datetime
-import jinja2
 import os
 import platform
 import sys
 
-from google.cloud import firestore
+import jinja2
 from flask import redirect, request
+from google.cloud import firestore
 
 
-class Theme(object):
+class Theme:
     """Theme class."""
 
-    def __init__(
-            self,
-            appengine,
-            app_name=None,
-            links=None,
-            repo=None,
-            analytics_tag=None,
-            body_class="container",
-            extended_footer=None,
-            topnav_padding=False,
+    def __init__(  # noqa: PLR0913
+        self,
+        appengine,
+        app_name=None,
+        links=None,
+        repo=None,
+        analytics_tag=None,
+        body_class="container",
+        extended_footer=None,
+        topnav_padding=False,
     ):
         """Initialize a class instance."""
         self.appengine = appengine
@@ -30,11 +29,11 @@ class Theme(object):
         self.links = links
         self.repo = repo
 
-        path = '{}/templates'.format(os.path.dirname(os.path.abspath(__file__)))
+        path = f"{os.path.dirname(os.path.abspath(__file__))}/templates"
         self.jinja = jinja2.Environment(
             loader=jinja2.FileSystemLoader(path),
-            extensions=['jinja2.ext.autoescape'],
-            autoescape=True
+            extensions=["jinja2.ext.autoescape"],
+            autoescape=True,
         )
 
         self.analytics_tag = analytics_tag
@@ -49,7 +48,9 @@ class Theme(object):
         """Return a person record from firestore."""
         # get person based on email address
         client = firestore.Client(project=self.appengine.people_project)
-        query = client.collection(self.appengine.people_collection).where('emails', 'array_contains', email)
+        query = client.collection(self.appengine.people_collection).where(
+            "emails", "array_contains", email
+        )
         try:
             results = list(query.stream())
         except Exception as e:
@@ -64,7 +65,7 @@ class Theme(object):
         """Render the footer for the main template."""
         major, minor, _ = platform.python_version_tuple()
         version = f"{major}.{minor}"
-        template = self.jinja.get_template('footer.html')
+        template = self.jinja.get_template("footer.html")
         return template.render(
             analytics_tag=self.analytics_tag,
             now=self.now,
@@ -74,7 +75,7 @@ class Theme(object):
 
     def render_header(self, page_name=None):
         """Render the header for the main template."""
-        template = self.jinja.get_template('header.html')
+        template = self.jinja.get_template("header.html")
         return template.render(
             app_name=self.app_name,
             page_name=page_name,
@@ -87,7 +88,7 @@ class Theme(object):
         topnav = self.render_topnav()
         footer = self.render_footer()
 
-        template = self.jinja.get_template('theme.html')
+        template = self.jinja.get_template("theme.html")
         return template.render(
             # html content
             header=header,
@@ -96,7 +97,6 @@ class Theme(object):
             footer=footer,
             body_class=self.body_class,
             extended_footer=self.extended_footer,
-
             # user information
             is_admin=self.user().admin,
             is_dev=self.user().is_dev(),
@@ -105,7 +105,7 @@ class Theme(object):
 
     def render_topnav(self, repo=None):
         """Render the topnav for the main template."""
-        template = self.jinja.get_template('topnav.html')
+        template = self.jinja.get_template("topnav.html")
         if self.topnav_padding:
             topnav_padding = "navbar-fixed-top"
         else:
@@ -117,7 +117,7 @@ class Theme(object):
             links=self.links,
             request=request,
             user=self.user(),
-            topnav_padding=topnav_padding
+            topnav_padding=topnav_padding,
         )
 
     # @app.route('/admin/users')
@@ -125,13 +125,13 @@ class Theme(object):
         """Return the admin users page."""
         email = self.user().email
         if not self.user().is_admin():
-            print('Unauthorized user visited admin users page: {}'.format(email))
-            return redirect('/')
-        print('User visited the admin users page: {}'.format(email))
+            print(f"Unauthorized user visited admin users page: {email}")
+            return redirect("/")
+        print(f"User visited the admin users page: {email}")
 
         users = self.user().get_users()
 
-        template = self.jinja.get_template('users.html')
+        template = self.jinja.get_template("users.html")
         body = template.render(
             app_name=self.app_name,
             is_dev=self.user().is_dev(),
@@ -144,12 +144,12 @@ class Theme(object):
         """Return the admin user add page."""
         email = self.user().email
         if not self.user().is_admin():
-            print('Unauthorized user visited admin users add page: {}'.format(
-                email,
-            ))
-            return redirect('/')
-        print('User visited the admin users add page: {}'.format(email))
-        template = self.jinja.get_template('user.html')
+            print(
+                f"Unauthorized user visited admin users add page: {email}"
+            )
+            return redirect("/")
+        print(f"User visited the admin users add page: {email}")
+        template = self.jinja.get_template("user.html")
         body = template.render(
             type="add",
             user={},
@@ -160,52 +160,49 @@ class Theme(object):
         """Return the admin user add page."""
         email = self.user().email
         if not self.user().is_admin():
-            print('Unauthorized user visited admin users add user: {}'.format(
-                email,
-            ))
-            return redirect('/')
-        user_email = request.form.get('email')
+            print(
+                f"Unauthorized user visited admin users add user: {email}"
+            )
+            return redirect("/")
+        user_email = request.form.get("email")
 
         # get person from bitsdb firestore
         person = self._get_person(user_email)
 
         # get google user_id
-        user_id = person.get('google_id')
+        user_id = person.get("google_id")
 
         # get admin status
         admin = False
-        if request.form.get('admin') == 'True':
+        if request.form.get("admin") == "True":
             admin = True
 
         # create user record
-        user = {'admin': admin, 'email': user_email, 'id': user_id}
+        user = {"admin": admin, "email": user_email, "id": user_id}
 
         # save user
         self.user().save_user(user)
 
-        print('User {} updated a new user: {} [{}] admin: {}'.format(
-            email,
-            user_email,
-            user_id,
-            admin,
-        ))
-        return redirect('/admin/users')
+        print(
+            f"User {email} updated a new user: {user_email} [{user_id}] admin: {admin}"
+        )
+        return redirect("/admin/users")
 
     # @app.route('/admin/users/<google_id>')
     def admin_users_edit_page(self, google_id, page_name=None):
         """Return the admin user edit page."""
         email = self.user().email
         if not self.user().is_admin():
-            print('Unauthorized user visited admin users edit page: {}'.format(
-                email,
-            ))
-            return redirect('/')
-        print('User visited the admin users edit page: {}'.format(email))
+            print(
+                f"Unauthorized user visited admin users edit page: {email}"
+            )
+            return redirect("/")
+        print(f"User visited the admin users edit page: {email}")
         user = self.user().get_user(google_id)
-        template = self.jinja.get_template('user.html')
+        template = self.jinja.get_template("user.html")
         body = template.render(
             google_id=google_id,
-            type='edit',
+            type="edit",
             user=user,
         )
         return self.render_theme(body, page_name=page_name)
@@ -214,27 +211,25 @@ class Theme(object):
         """Return the admin user edit page."""
         email = self.user().email
         if not self.user().is_admin():
-            print('Unauthorized user visited admin users edit user: {}'.format(
-                email,
-            ), file=sys.stderr)
-            return redirect('/')
-        user_id, user_email = request.form.get('user').split(':')
+            print(
+                f"Unauthorized user visited admin users edit user: {email}",
+                file=sys.stderr,
+            )
+            return redirect("/")
+        user_id, user_email = request.form.get("user").split(":")
         admin = False
-        if request.form.get('admin') == 'True':
+        if request.form.get("admin") == "True":
             admin = True
-        user = {'admin': admin, 'email': user_email, 'id': user_id}
+        user = {"admin": admin, "email": user_email, "id": user_id}
         self.user().save_user(user)
-        print('User {} updated a new user: {} [{}] admin: {}'.format(
-            email,
-            user_email,
-            user_id,
-            admin,
-        ))
-        return redirect('/admin/users')
+        print(
+            f"User {email} updated a new user: {user_email} [{user_id}] admin: {admin}"
+        )
+        return redirect("/admin/users")
 
     def admin_users_delete(self, google_id):
         """Delete a user and redirect t ousers page.."""
         if not self.user().is_admin():
-            return redirect('/')
+            return redirect("/")
         self.user().delete_user(google_id)
-        return redirect('/admin/users')
+        return redirect("/admin/users")
