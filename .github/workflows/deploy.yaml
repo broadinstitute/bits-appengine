@@ -1,0 +1,13 @@
+---
+name: 'deploy'
+
+'on':
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  pypi_deploy:
+    uses: broadinstitute/shared-workflows/.github/workflows/poetry-deploy.yml@v1.4.0
+    secrets:
+      pypi_token: ${{ secrets.PYPI_TOKEN }}
