@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.1.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: check-ast
@@ -24,11 +24,11 @@ repos:
       #     - -b prod
       - id: trailing-whitespace
   - repo: https://github.com/broadinstitute/mirrors-pylama
-    rev: v1.0.1
+    rev: v1.0.2
     hooks:
       - id: pylama
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.15.0
+    rev: v1.32.0
     hooks:
       - id: yamllint
         args:

@@ -1,0 +1,13 @@
+---
+name: 'test_deploy'
+
+'on':
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  pypi_test_deploy:
+    uses: broadinstitute/shared-workflows/.github/workflows/poetry-test-deploy.yml@v1.4.0
+    secrets:
+      pypi_test_token: ${{ secrets.PYPI_TEST_TOKEN }}
