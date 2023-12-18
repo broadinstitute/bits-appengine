@@ -8,7 +8,7 @@ name: 'checks'
 
 jobs:
   linting:
-    uses: broadinstitute/shared-workflows/.github/workflows/poetry-linting.yml@v2.0.0
+    uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v2.0.0
     with:
       use_pylama: false
       use_ruff: true
