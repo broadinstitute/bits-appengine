@@ -392,13 +392,13 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.140.0"
+version = "2.141.0"
 description = "Google API Client Library for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_api_python_client-2.140.0-py2.py3-none-any.whl", hash = "sha256:aeb4bb99e9fdd241473da5ff35464a0658fea0db76fe89c0f8c77ecfc3813404"},
-    {file = "google_api_python_client-2.140.0.tar.gz", hash = "sha256:0bb973adccbe66a3d0a70abe4e49b3f2f004d849416bfec38d22b75649d389d8"},
+    {file = "google_api_python_client-2.141.0-py2.py3-none-any.whl", hash = "sha256:43c05322b91791204465291b3852718fae38d4f84b411d8be847c4f86882652a"},
+    {file = "google_api_python_client-2.141.0.tar.gz", hash = "sha256:0f225b1f45d5a6f8c2a400f48729f5d6da9a81138e81e0478d61fdd8edf6563a"},
 ]
 
 [package.dependencies]
@@ -410,13 +410,13 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.33.0"
+version = "2.34.0"
 description = "Google Authentication Library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_auth-2.33.0-py2.py3-none-any.whl", hash = "sha256:8eff47d0d4a34ab6265c50a106a3362de6a9975bb08998700e389f857e4d39df"},
-    {file = "google_auth-2.33.0.tar.gz", hash = "sha256:d6a52342160d7290e334b4d47ba390767e4438ad0d45b7630774533e82655b95"},
+    {file = "google_auth-2.34.0-py2.py3-none-any.whl", hash = "sha256:72fd4733b80b6d777dcde515628a9eb4a577339437012874ea286bca7261ee65"},
+    {file = "google_auth-2.34.0.tar.gz", hash = "sha256:8eb87396435c19b20d32abd2f984e31c191a15284af72eb922f10e5bde9c04cc"},
 ]
 
 [package.dependencies]
@@ -426,7 +426,7 @@ rsa = ">=3.1.4,<5"
 
 [package.extras]
 aiohttp = ["aiohttp (>=3.6.2,<4.0.0.dev0)", "requests (>=2.20.0,<3.0.0.dev0)"]
-enterprise-cert = ["cryptography (==36.0.2)", "pyopenssl (==22.0.0)"]
+enterprise-cert = ["cryptography", "pyopenssl"]
 pyopenssl = ["cryptography (>=38.0.3)", "pyopenssl (>=20.0.0)"]
 reauth = ["pyu2f (>=0.1.5)"]
 requests = ["requests (>=2.20.0,<3.0.0.dev0)"]
@@ -466,13 +466,13 @@ grpc = ["grpcio (>=1.38.0,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-datastore"
-version = "2.20.0"
+version = "2.20.1"
 description = "Google Cloud Datastore API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_cloud_datastore-2.20.0-py2.py3-none-any.whl", hash = "sha256:68754f97f3062e292cec537dd80bd5e662aff596e4c93705b3692bd2a61166be"},
-    {file = "google_cloud_datastore-2.20.0.tar.gz", hash = "sha256:ef08b1f219262f67289d00daa8d7fd222688d9f8341224c186d3e0c0524f2c8f"},
+    {file = "google_cloud_datastore-2.20.1-py2.py3-none-any.whl", hash = "sha256:b9383af24d8e90ed6c5d161d72411d82efd9b21c051fa6f4bbd743a49d37ffb3"},
+    {file = "google_cloud_datastore-2.20.1.tar.gz", hash = "sha256:07950b9c8865087c565f45fa3fdd7a05d4c3d99adf79e10c3f596ff08a7d9bba"},
 ]
 
 [package.dependencies]
@@ -483,20 +483,20 @@ proto-plus = [
     {version = ">=1.22.2,<2.0.0dev", markers = "python_version >= \"3.11\""},
     {version = ">=1.22.0,<2.0.0dev", markers = "python_version < \"3.11\""},
 ]
-protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-firestore"
-version = "2.17.0"
+version = "2.17.2"
 description = "Google Cloud Firestore API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-firestore-2.17.0.tar.gz", hash = "sha256:3e81b71d963b7e3bcc87fb813236f3864bc7b0a3f207ac4d87bc6595efe2b8a3"},
-    {file = "google_cloud_firestore-2.17.0-py2.py3-none-any.whl", hash = "sha256:a4211c9f4ff9a701103c2217f87855ffb04ec595447753956b2ab97d8492039e"},
+    {file = "google_cloud_firestore-2.17.2-py2.py3-none-any.whl", hash = "sha256:98ff885f67ca8d1f4589235a3322591a83b7890d97763ae7549c5c2bebc3b134"},
+    {file = "google_cloud_firestore-2.17.2.tar.gz", hash = "sha256:9ea3c78f8df87e92c0be7c3fe598ab687c3093429ff9d41dbb8c433835367c40"},
 ]
 
 [package.dependencies]
@@ -507,7 +507,7 @@ proto-plus = [
     {version = ">=1.22.2,<2.0.0dev", markers = "python_version >= \"3.11\""},
     {version = ">=1.22.0,<2.0.0dev", markers = "python_version < \"3.11\""},
 ]
-protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
 
 [[package]]
 name = "googleapis-common-protos"
