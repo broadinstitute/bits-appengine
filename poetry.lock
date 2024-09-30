@@ -387,13 +387,13 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.146.0"
+version = "2.147.0"
 description = "Google API Client Library for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_api_python_client-2.146.0-py2.py3-none-any.whl", hash = "sha256:b1e62c9889c5ef6022f11d30d7ef23dc55100300f0e8aaf8aa09e8e92540acad"},
-    {file = "google_api_python_client-2.146.0.tar.gz", hash = "sha256:41f671be10fa077ee5143ee9f0903c14006d39dc644564f4e044ae96b380bf68"},
+    {file = "google_api_python_client-2.147.0-py2.py3-none-any.whl", hash = "sha256:c6ecfa193c695baa41e84562d8f8f244fcd164419eca3fc9fd7565646668f9b2"},
+    {file = "google_api_python_client-2.147.0.tar.gz", hash = "sha256:e864c2cf61d34c00f05278b8bdb72b93b6fa34f0de9ead51d20435f3b65f91be"},
 ]
 
 [package.dependencies]
@@ -485,13 +485,13 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-firestore"
-version = "2.18.0"
+version = "2.19.0"
 description = "Google Cloud Firestore API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_cloud_firestore-2.18.0-py2.py3-none-any.whl", hash = "sha256:9a735860b692f39f93f900dd3390713ceb9b47ea82cda98360bb551f03d2b916"},
-    {file = "google_cloud_firestore-2.18.0.tar.gz", hash = "sha256:3db5dd42334b9904d82b3786703a5a4b576810fb50f61b8fa83ecf4f17b7fdae"},
+    {file = "google_cloud_firestore-2.19.0-py2.py3-none-any.whl", hash = "sha256:b49f0019d7bd0d4ab5972a4cff13994b0aabe72d24242200d904db2fb49df7f7"},
+    {file = "google_cloud_firestore-2.19.0.tar.gz", hash = "sha256:1b2ce6e0b791aee89a1e4f072beba1012247e89baca361eed721fb467fe054b0"},
 ]
 
 [package.dependencies]
