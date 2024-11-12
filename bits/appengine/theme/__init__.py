@@ -32,7 +32,6 @@ class Theme:
         path = f"{os.path.dirname(os.path.abspath(__file__))}/templates"
         self.jinja = jinja2.Environment(
             loader=jinja2.FileSystemLoader(path),
-            extensions=["jinja2.ext.autoescape"],
             autoescape=True,
         )
 
