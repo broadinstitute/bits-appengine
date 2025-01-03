@@ -1,0 +1,19 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: bits-appengine
+  description: BITS AppEngine Python Package
+  links:
+    - {}
+  tags:
+    - gcp
+    - appengine
+  annotations:
+    github.com/project-slug: broadinstitute/bits-appengine
+    backstage.io/source-template: template:default/open-pr-with-catalog-entry
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: library
+  lifecycle: production
+  owner: devnull
