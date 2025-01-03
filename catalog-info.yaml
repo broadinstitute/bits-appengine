@@ -4,8 +4,6 @@ kind: Component
 metadata:
   name: bits-appengine
   description: BITS AppEngine Python Package
-  links:
-    - {}
   tags:
     - gcp
     - appengine
