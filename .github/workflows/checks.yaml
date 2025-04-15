@@ -8,7 +8,7 @@ name: 'checks'
 
 jobs:
   linting:
-    uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v3.0.0
+    uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v3.1.1
     with:
       use_pylama: false
       use_ruff: true
