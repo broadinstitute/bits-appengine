@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "poetry.masonry.api"
-requires = ["poetry>=0.12"]
+requires = ["poetry>=2"]
 
 [tool.poetry]
 authors = ["Lukas Karlsson <karlsson@broadinstitute.org>"]
@@ -16,7 +16,7 @@ name = "bits-appengine"
 packages = [
     { include = "bits" },
 ]
-readme = "README.md"
+readme = "docs/README.md"
 repository = "https://github.com/broadinstitute/bits-appengine.git"
 version = "1.3.0"
 
@@ -25,19 +25,14 @@ python = "^3.9"  # Compatible python versions must be declared here
 
 flask = "*"
 google-api-python-client = "*"
-google-auth = "*"
 google-cloud-datastore = "*"
 google-cloud-firestore = "*"
 httplib2 = "*"
 oauth2client = "*"
 toml = "*"
 
-[tool.poetry.dev-dependencies]
-pydocstyle = "*"
-pylint = "*"
+[tool.poetry.group.dev.dependencies]
 pyyaml = "*"
-twine = "*"
-wheel = "*"
 yamllint = "*"
 
 [tool.ruff]
