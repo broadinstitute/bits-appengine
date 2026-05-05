@@ -1,14 +1,14 @@
 ---
-name: 'checks'
+name: checks
 
-'on':
+"on":
   pull_request:
     branches:
-      - 'main'
+      - main
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
   linting:
     uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v6.0.0
-    with:
-      use_pylama: false
-      use_ruff: true
