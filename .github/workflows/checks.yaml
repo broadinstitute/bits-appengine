@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   linting:
-    uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v6.2.0
+    uses: broadinstitute/shared-workflows/.github/workflows/python-lint.yaml@v6.3.0
